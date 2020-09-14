@@ -55,7 +55,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yMZ-NL-TQb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="282.60869565217394" y="-60.267857142857139"/>
+            <point key="canvasLocation" x="191" y="-60"/>
         </scene>
         <!--Alarm Detail Table View Controller-->
         <scene sceneID="Sqz-Rw-Ydq">
@@ -83,7 +83,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IFg-e9-Av9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1022" y="-60"/>
+            <point key="canvasLocation" x="890" y="-60"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3Np-DL-IZS">
