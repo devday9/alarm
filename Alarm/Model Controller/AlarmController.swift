@@ -14,16 +14,16 @@ class AlarmController {
     
     var alarms: [Alarm] = []
     
-    var mockAlarms: [Alarm] {
-        return [
-            Alarm(name: "WAKE UP!!!!!!", fireDate: Date(), enabled: true),
-            Alarm(name: "Buy Groceries!", fireDate: Date(), enabled: true)
-        ]
-    }
+//    var mockAlarms: [Alarm] {
+//        return [
+//            Alarm(name: "WAKE UP!!!!!!", fireDate: Date(), enabled: true),
+//            Alarm(name: "Buy Groceries!", fireDate: Date(), enabled: true)
+//        ]
+//    }
     
-    init() {
-        self.alarms = mockAlarms
-    }
+//    init() {
+//        self.alarms = mockAlarms
+//    }
     
     func addAlarm(fireDate: Date, name: String, enabled: Bool) -> Alarm {
         let newAlarm = Alarm(name: name, fireDate: fireDate, enabled: enabled)
