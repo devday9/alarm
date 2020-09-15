@@ -8,25 +8,29 @@
 
 import Foundation
 
-class Alarm: Codable {
-    var fireDate: Date
-    let name: String
-    var enabled: Bool
-    var uuid : String
+class Alarm {
     
-    init(fireDate: Date, name: String, enabled: Bool, uuid: String) {
-        self.fireDate = fireDate
-        self.name = name
-        self.enabled = enabled
-        self.uuid = UUID().uuidString
+    var name: String
+    var fireDate: Date
+    var enabled: Bool
+    var uuid: String
+    var fireTimeAsString: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter.string(from: fireDate)
     }
     
-//    Add a computed property called fireTimeAsString which will return a String representation of the time you want the alarm to fire. This is simply for the UI. *note: Use Apple’s DateFormater class to return a String from your existing fireDate property. *Please Read: https://developer.apple.com/documentation/foundation/dateformatter
-    
-}// END OF CLASS
+    init(name: String, fireDate: Date, enabled: Bool, uuid: String = UUID().uuidString) {
+        self.name = name
+        self.fireDate = fireDate
+        self.enabled = enabled
+        self.uuid = uuid
+    }
+}
 
 extension Alarm: Equatable {
     static func == (lhs: Alarm, rhs: Alarm) -> Bool {
-        return lhs.name == rhs.name && lhs.fireDate == rhs.fireDate
+        return lhs.uuid == rhs.uuid
     }
 }
