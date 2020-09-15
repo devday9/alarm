@@ -7,14 +7,20 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (authGranted, error) in
+            if authGranted {
+                print("Notification authorization was granted")
+            } else {
+                print("Notification authorization was not granted")
+            }
+        }
         return true
     }
 
