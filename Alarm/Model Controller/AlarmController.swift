@@ -11,10 +11,9 @@ import UserNotifications
 
 protocol AlarmScheduler: AnyObject {
     func cancelUserNotifications(for alarm: Alarm)
-    func sheduleUserNotifications(for alarm: Alarm)
+    func scheduleUserNotifications(for alarm: Alarm)
 }
-
-class AlarmController {
+class AlarmController: AlarmScheduler {
     
     static let sharedInstance = AlarmController()
     
@@ -31,15 +30,7 @@ class AlarmController {
         loadFromPersistentStore()
     }
     
-    private static var fileURL: URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        let filename = "Alarm.json"
-        let fullURL = documentsDirectory.appendingPathComponent(filename)
-        return fullURL
-    }
-    
-   func addAlarm(fireDate: Date, name: String, enabled: Bool) -> Alarm {
+   func addAlarm(fireDate: Date, name: String, enabled: Bool) {
        let newAlarm = Alarm(name: name, fireDate: fireDate, enabled: enabled)
        alarms.append(newAlarm)
        if newAlarm.enabled {
@@ -48,7 +39,6 @@ class AlarmController {
            cancelUserNotifications(for: newAlarm)
        }
        saveToPersistentStore()
-       return newAlarm
    }
     
     func updateAlarm(alarm: Alarm, name: String, fireDate: Date, enabled: Bool) {
@@ -65,6 +55,7 @@ class AlarmController {
     
     func delete(alarm: Alarm) {
         guard let index = alarms.firstIndex(of: alarm) else { return }
+        cancelUserNotifications(for: alarm)
         alarms.remove(at: index)
         saveToPersistentStore()
     }
@@ -79,12 +70,20 @@ class AlarmController {
         saveToPersistentStore()
     }
     
+    func fileURL() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let filename = "alarms.json"
+        let fullURL = documentsDirectory.appendingPathComponent(filename)
+        return fullURL
+    }
+    
     func saveToPersistentStore() {
         let jsonEncoder = JSONEncoder()
         
         do {
             let data = try jsonEncoder.encode(AlarmController.sharedInstance.alarms)
-            try data.write(to: AlarmController.fileURL)
+            try data.write(to: fileURL())
         } catch let error {
             print("Error saving to persistent store: \(error.localizedDescription)")
         }
@@ -94,17 +93,18 @@ class AlarmController {
         let jsonDecoder = JSONDecoder()
         
         do {
-            let data = try Data(contentsOf: AlarmController.fileURL)
+            let data = try Data(contentsOf: fileURL())
             let decodedAlarms = try jsonDecoder.decode([Alarm].self, from: data)
             self.alarms = decodedAlarms
         } catch let error {
             print("Error loading from persistent store: \(error.localizedDescription)")
+            print("OR Storage could be empty")
         }
     }
 }//END OF CLASS
 
 //MARK: - Extensions
-extension AlarmController: AlarmScheduler {
+extension AlarmScheduler {
     func cancelUserNotifications(for alarm: Alarm) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm.uuid])
     }
